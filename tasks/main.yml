@@ -1,0 +1,32 @@
+---
+# tasks file for roles/re2
+
+- apt: name={{item}} update_cache=yes cache_valid_time=7200
+  sudo: yes
+  with_items:
+    - git
+    - build-essential
+    - python-pip
+    - python-dev
+
+- git: repo=git@github.com:google/re2.git
+       dest={{re2_path}}
+       version=master
+       accept_hostkey=True
+       force=True
+  register: gitpull
+
+- make:
+    chdir: "{{re2_path}}"
+
+- make:
+    chdir: "{{re2_path}}"
+    target: install
+  sudo: yes
+
+- pip:
+    name: re2
+    version: 0.2.22
+  environment:
+    CPPFLAGS: "-std=c++11"
+  sudo: yes

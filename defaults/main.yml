@@ -1,0 +1,3 @@
+---
+# defaults file for roles/re2
+re2_path: "/home/ubuntu/re2"
